@@ -1,6 +1,6 @@
 # Auto Cutout Studio
 
-一个 Windows 桌面自动抠图工具，用于把商品、人像或主体图片快速导出为透明 PNG。
+一个 Windows 桌面自动抠图工具，用于把商品、人像或主体图片快速导出为透明 PNG。仓库名：`Automatic-image-cropping`。
 
 ## 功能
 
@@ -17,6 +17,12 @@
 dotnet run --project .\src\AutoCutoutStudio\AutoCutoutStudio.csproj
 ```
 
+也可以直接双击：
+
+```text
+Start-AutoCutoutStudio.bat
+```
+
 ## 构建
 
 ```powershell
@@ -28,3 +34,7 @@ dotnet build .\AutoCutoutStudio.sln -c Release
 ```text
 src\AutoCutoutStudio\bin\Release\net10.0-windows\AutoCutoutStudio.exe
 ```
+
+## 许可
+
+本项目沿用仓库中的 Unlicense 公共领域许可。
