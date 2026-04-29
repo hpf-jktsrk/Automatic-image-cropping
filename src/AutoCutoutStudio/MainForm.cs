@@ -74,7 +74,7 @@ internal sealed class MainForm : Form
         };
 
         ConfigureButton(_openButton, "打开图片");
-        ConfigureButton(_processButton, "重新抠图");
+        ConfigureButton(_processButton, "应用参数并重新抠图");
         ConfigureButton(_saveButton, "保存 PNG");
         _saveButton.Enabled = false;
 
@@ -119,10 +119,10 @@ internal sealed class MainForm : Form
         _openButton.Click += (_, _) => OpenImage();
         _saveButton.Click += (_, _) => SaveImage();
         _processButton.Click += async (_, _) => await ProcessImageAsync();
-        _tolerance.ValueChanged += async (_, _) => await ProcessImageAsync();
-        _feather.ValueChanged += async (_, _) => await ProcessImageAsync();
-        _cleanup.ValueChanged += async (_, _) => await ProcessImageAsync();
-        _shadow.CheckedChanged += async (_, _) => await ProcessImageAsync();
+        _tolerance.ValueChanged += (_, _) => MarkOptionsChanged();
+        _feather.ValueChanged += (_, _) => MarkOptionsChanged();
+        _cleanup.ValueChanged += (_, _) => MarkOptionsChanged();
+        _shadow.CheckedChanged += (_, _) => MarkOptionsChanged();
 
         DragEnter += (_, e) =>
         {
@@ -231,7 +231,7 @@ internal sealed class MainForm : Form
             _result = result;
             _preview.Image = _result;
             _saveButton.Enabled = true;
-            UpdateStatus($"抠图完成：容差 {options.Tolerance}，羽化 {options.Feather}，清理 {options.EdgeCleanup}。");
+            UpdateStatus($"抠图完成：容差 {options.Tolerance}，羽化 {options.Feather}，清理 {options.EdgeCleanup}。调整参数后点击按钮重新应用。");
         }
         catch (Exception ex)
         {
@@ -278,6 +278,16 @@ internal sealed class MainForm : Form
         _cleanup.Enabled = !busy;
         _shadow.Enabled = !busy;
         Cursor = busy ? Cursors.WaitCursor : Cursors.Default;
+    }
+
+    private void MarkOptionsChanged()
+    {
+        if (_source is null || _isProcessing)
+        {
+            return;
+        }
+
+        UpdateStatus($"参数已调整：容差 {_tolerance.Value}，羽化 {_feather.Value}，清理 {_cleanup.Value}。点击“应用参数并重新抠图”生效。");
     }
 
     private void UpdateStatus(string text) => _status.Text = text;
