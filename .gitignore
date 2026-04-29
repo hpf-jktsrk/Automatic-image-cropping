@@ -1,0 +1,13 @@
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+*.log
+output/
+publish/
+.appdata/
+.localappdata/
+.dotnet-home/
